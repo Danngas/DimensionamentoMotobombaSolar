@@ -74,4 +74,13 @@
     "potencia": "5.5CV",
     "dados": [
       { "vazao": 0, "altura": 220 },
-      { "vazao": 3
+      { "vazao": 3.6, "altura": 189 },
+      { "vazao": 4.8, "altura": 177 },
+      { "vazao": 6, "altura": 155 },
+      { "vazao": 7.2, "altura": 142 },
+      { "vazao": 8.4, "altura": 120 },
+      { "vazao": 9.6, "altura": 91 },
+      { "vazao": 10.8, "altura": 55 }
+    ]
+  }
+]
