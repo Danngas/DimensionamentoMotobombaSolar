@@ -1,2 +1,28 @@
-@import "https://cdn.tailwindcss.com";
-/* Adicione personalizações de CSS aqui, se necessário */
+/* Personalizações de CSS para complementar o Tailwind */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+button {
+  transition: all 0.3s ease;
+}
+
+#mensagem.success {
+  background-color: #e6fffa;
+  color: #1a4731;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #b3e6cc;
+}
+
+#mensagem.error {
+  background-color: #fff5f5;
+  color: #9b2c2c;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #feb2b2;
+}
