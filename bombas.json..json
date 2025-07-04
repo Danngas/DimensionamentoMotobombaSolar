@@ -1,0 +1,86 @@
+[
+  {
+    "modelo": "R95-ST8-06",
+    "potencia": "1CV",
+    "dados": [
+      { "vazao": 0, "altura": 55 },
+      { "vazao": 3.6, "altura": 48 },
+      { "vazao": 4.8, "altura": 43 },
+      { "vazao": 6, "altura": 38 },
+      { "vazao": 7.2, "altura": 33 },
+      { "vazao": 8.4, "altura": 27 },
+      { "vazao": 9.6, "altura": 18 },
+      { "vazao": 10.8, "altura": 9 }
+    ]
+  },
+  {
+    "modelo": "R95-ST8-08",
+    "potencia": "1.5CV",
+    "dados": [
+      { "vazao": 0, "altura": 77 },
+      { "vazao": 3.6, "altura": 65 },
+      { "vazao": 4.8, "altura": 57 },
+      { "vazao": 6, "altura": 50 },
+      { "vazao": 7.2, "altura": 43 },
+      { "vazao": 8.4, "altura": 35 },
+      { "vazao": 9.6, "altura": 24 },
+      { "vazao": 10.8, "altura": 12 }
+    ]
+  },
+  {
+    "modelo": "R95-ST8-10",
+    "potencia": "2CV",
+    "dados": [
+      { "vazao": 0, "altura": 91 },
+      { "vazao": 3.6, "altura": 77 },
+      { "vazao": 4.8, "altura": 72 },
+      { "vazao": 6, "altura": 65 },
+      { "vazao": 7.2, "altura": 58 },
+      { "vazao": 8.4, "altura": 48 },
+      { "vazao": 9.6, "altura": 32 },
+      { "vazao": 10.8, "altura": 17 }
+    ]
+  },
+  {
+    "modelo": "R95-ST8-14",
+    "potencia": "3CV",
+    "dados": [
+      { "vazao": 0, "altura": 128 },
+      { "vazao": 3.6, "altura": 109 },
+      { "vazao": 4.8, "altura": 102 },
+      { "vazao": 6, "altura": 94 },
+      { "vazao": 7.2, "altura": 83 },
+      { "vazao": 8.4, "altura": 70 },
+      { "vazao": 9.6, "altura": 51 },
+      { "vazao": 10.8, "altura": 29 }
+    ]
+  },
+  {
+    "modelo": "R95-ST8-18",
+    "potencia": "4CV",
+    "dados": [
+      { "vazao": 0, "altura": 160 },
+      { "vazao": 3.6, "altura": 139 },
+      { "vazao": 4.8, "altura": 129 },
+      { "vazao": 6, "altura": 117 },
+      { "vazao": 7.2, "altura": 104 },
+      { "vazao": 8.4, "altura": 89 },
+      { "vazao": 9.6, "altura": 67 },
+      { "vazao": 10.8, "altura": 40 }
+    ]
+  },
+  {
+    "modelo": "R95-ST8-24",
+    "potencia": "5.5CV",
+    "dados": [
+      { "vazao": 0, "altura": 220 },
+      { "vazao": 3.6, "altura": 189 },
+      { "vazao": 4.8, "altura": 177 },
+      { "vazao": 6, "altura": 155 },
+      { "vazao": 7.2, "altura": 142 },
+      { "vazao": 8.4, "altura": 120 },
+      { "vazao": 9.6, "altura": 91 },
+      { "vazao": 10.8, "altura": 55 }
+    ]
+  }
+]

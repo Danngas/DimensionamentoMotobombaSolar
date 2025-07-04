@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dimensionamento de Motobomba Solar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="styles.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="container mx-auto p-6 max-w-7xl">
+    <h1 class="text-4xl font-bold text-center mb-8">Dimensionamento de Motobomba Solar</h1>
+    <div class="bg-white p-8 rounded-lg shadow-md">
+      <h2 class="text-2xl font-semibold mb-6">Dados de Projeto</h2>
+      <form id="dimensionamento-form">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="mb-4">
+            <label for="h1" class="block text-sm font-medium text-gray-700">Altura da Profundidade do Poço (m):</label>
+            <input type="number" id="h1" class="mt-1 p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01" required>
+          </div>
+          <div class="mb-4">
+            <label for="h2" class="block text-sm font-medium text-gray-700">Altura do Reservatório (m):</label>
+            <input type="number" id="h2" class="mt-1 p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01" required>
+          </div>
+          <div class="mb-4">
+            <label for="distancia" class="block text-sm font-medium text-gray-700">Distância do Poço até o Reservatório (m):</label>
+            <input type="number" id="distancia" class="mt-1 p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01" required>
+          </div>
+          <div class="mb-4">
+            <label for="vazao" class="block text-sm font-medium text-gray-700">Vazão Desejada:</label>
+            <div class="flex space-x-3">
+              <input type="number" id="vazao" class="mt-1 p-3 w-3/4 border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01" placeholder="Metros Cúbicos por Hora" required>
+              <select id="unidade-vazao" class="mt-1 p-3 w-1/4 border rounded-md focus:ring-blue-500 focus:border-blue-500">
+                <option value="m3_hora" selected>m³/h</option>
+                <option value="l_dia">L/dia</option>
+                <option value="l_hora">L/h</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-4 hidden" id="hsp-container">
+            <label for="hsp" class="block text-sm font-medium text-gray-700">Horas de Sol Pleno (h):</label>
+            <input type="number" id="hsp" class="mt-1 p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01">
+            <p class="text-sm text-gray-500 mt-1">Consulte o valor de HSP no <a href="https://re.jrc.ec.europa.eu/pvg_tools/en/" target="_blank" class="text-blue-500 underline">SunData</a>.</p>
+          </div>
+          <div class="mb-4">
+            <label for="k_perdas" class="block text-sm font-medium text-gray-700">Coeficiente de Perdas:</label>
+            <input type="number" id="k_perdas" class="mt-1 p-3 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01" value="0.1" required>
+            <p class="text-sm text-red-500 mt-1">Ajuste apenas se souber o que está fazendo.</p>
+          </div>
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 transition">Calcular</button>
+      </form>
+
+      <div class="mt-8 p-6 bg-gray-50 rounded-md">
+        <h2 class="text-2xl font-semibold mb-6">Dimensionamento</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <p id="vazao-m3h" class="text-lg">Vazão Calculada: <span>0.00</span> m³/h</p>
+          <p id="mca" class="text-lg">Altura Manométrica Total (MCA): <span>0.00</span> m</p>
+          <p id="bomba-recomendada" class="text-lg">Modelo de Bomba Recomendado: <span>Nenhum modelo encontrado</span></p>
+        </div>
+        <canvas id="curvas-bombas" class="w-full" style="max-height: 600px;"></canvas>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
