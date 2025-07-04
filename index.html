@@ -12,13 +12,18 @@
 </head>
 <body class="bg-gray-50 font-inter">
   <div class="container mx-auto p-6 max-w-7xl">
-    <header class="text-center mb-12">
-      <h1 class="text-5xl font-bold text-blue-800 mb-4">Dimensionamento de Motobomba Solar</h1>
-      <p class="text-lg text-gray-600">Calcule a bomba ideal para seu sistema de bombeamento solar de forma simples e precisa.</p>
+    <header class="text-center mb-12 flex items-center justify-center md:justify-start">
+      <a href="https://www.linkedin.com/in/danielsouzaengeletricista" target="_blank" class="mr-6">
+        <img src="logo.png" alt="Enner Engenharia Logo" class="h-16 w-auto">
+      </a>
+      <div>
+        <h1 class="text-5xl font-bold text-blue-900 mb-2">Dimensionamento de Motobomba Solar</h1>
+        <p class="text-lg text-gray-600">Calcule a bomba ideal para seu sistema de bombeamento solar de forma simples e precisa.</p>
+      </div>
     </header>
 
     <section class="bg-white p-8 rounded-xl shadow-lg mb-12">
-      <h2 class="text-3xl font-semibold text-blue-700 mb-6">Como Usar</h2>
+      <h2 class="text-3xl font-semibold text-blue-900 mb-6">Como Usar</h2>
       <ol class="list-decimal list-inside text-gray-700 space-y-2">
         <li>Preencha os dados do projeto no formulário abaixo (ex.: alturas, distância, vazão).</li>
         <li>Selecione a unidade de vazão (m³/h, L/dia ou L/h).</li>
@@ -29,14 +34,14 @@
     </section>
 
     <section class="bg-white p-8 rounded-xl shadow-lg">
-      <h2 class="text-3xl font-semibold text-blue-700 mb-6">Dados de Projeto</h2>
+      <h2 class="text-3xl font-semibold text-blue-900 mb-6">Dados de Projeto</h2>
       <form id="dimensionamento-form">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="relative mb-4">
             <label for="h1" class="block text-sm font-medium text-gray-700">Altura da Profundidade do Poço (m):</label>
             <div class="flex items-center">
               <i class="fas fa-ruler-vertical text-gray-400 absolute ml-3"></i>
-              <input type="number" id="h1" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01" required>
+              <input type="number" id="h1" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-700 focus:border-blue-700" step="0.01" required>
             </div>
             <p class="text-sm text-gray-500 mt-1">Distância vertical do nível da água ao solo.</p>
           </div>
@@ -44,7 +49,7 @@
             <label for="h2" class="block text-sm font-medium text-gray-700">Altura do Reservatório (m):</label>
             <div class="flex items-center">
               <i class="fas fa-ruler-vertical text-gray-400 absolute ml-3"></i>
-              <input type="number" id="h2" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01" required>
+              <input type="number" id="h2" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-700 focus:border-blue-700" step="0.01" required>
             </div>
             <p class="text-sm text-gray-500 mt-1">Altura vertical do reservatório acima do solo.</p>
           </div>
@@ -52,7 +57,7 @@
             <label for="distancia" class="block text-sm font-medium text-gray-700">Distância do Poço ao Reservatório (m):</label>
             <div class="flex items-center">
               <i class="fas fa-ruler-horizontal text-gray-400 absolute ml-3"></i>
-              <input type="number" id="distancia" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01" required>
+              <input type="number" id="distancia" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-700 focus:border-blue-700" step="0.01" required>
             </div>
             <p class="text-sm text-gray-500 mt-1">Comprimento total da tubulação.</p>
           </div>
@@ -61,9 +66,9 @@
             <div class="flex space-x-3">
               <div class="flex items-center w-3/4">
                 <i class="fas fa-tint text-gray-400 absolute ml-3"></i>
-                <input type="number" id="vazao" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01" placeholder="Metros Cúbicos por Hora" required>
+                <input type="number" id="vazao" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-700 focus:border-blue-700" step="0.01" placeholder="Metros Cúbicos por Hora" required>
               </div>
-              <select id="unidade-vazao" class="mt-1 p-3 w-1/4 border rounded-md focus:ring-blue-500 focus:border-blue-500">
+              <select id="unidade-vazao" class="mt-1 p-3 w-1/4 border rounded-md focus:ring-blue-700 focus:border-blue-700">
                 <option value="m3_hora" selected>m³/h</option>
                 <option value="l_dia">L/dia</option>
                 <option value="l_hora">L/h</option>
@@ -75,21 +80,21 @@
             <label for="hsp" class="block text-sm font-medium text-gray-700">Horas de Sol Pleno (h):</label>
             <div class="flex items-center">
               <i class="fas fa-sun text-gray-400 absolute ml-3"></i>
-              <input type="number" id="hsp" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01">
+              <input type="number" id="hsp" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-700 focus:border-blue-700" step="0.01">
             </div>
-            <p class="text-sm text-gray-500 mt-1">Consulte o valor de HSP no <a href="https://re.jrc.ec.europa.eu/pvg_tools/en/" target="_blank" class="text-blue-500 underline">SunData</a>.</p>
+            <p class="text-sm text-gray-500 mt-1">Consulte o valor de HSP no <a href="https://re.jrc.ec.europa.eu/pvg_tools/en/" target="_blank" class="text-blue-700 underline">SunData</a>.</p>
           </div>
           <div class="relative mb-4">
             <label for="k_perdas" class="block text-sm font-medium text-gray-700">Coeficiente de Perdas:</label>
             <div class="flex items-center">
               <i class="fas fa-cog text-gray-400 absolute ml-3"></i>
-              <input type="number" id="k_perdas" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-500 focus:border-blue-500" step="0.01" value="0.1" required>
+              <input type="number" id="k_perdas" class="mt-1 p-3 pl-10 w-full border rounded-md focus:ring-blue-700 focus:border-blue-700" step="0.01" value="0.1" required>
             </div>
-            <p class="text-sm text-red-500 mt-1">Ajuste apenas se souber o que está fazendo (padrão: 0.1).</p>
+            <p class="text-sm text-red-600 mt-1">Ajuste apenas se souber o que está fazendo (padrão: 0.1).</p>
           </div>
         </div>
         <div class="flex space-x-4">
-          <button type="submit" class="w-1/2 bg-gradient-to-r from-blue-500 to-blue-700 text-white p-3 rounded-md hover:from-blue-600 hover:to-blue-800 transition">Calcular</button>
+          <button type="submit" class="w-1/2 bg-gradient-to-r from-blue-700 to-blue-900 text-white p-3 rounded-md hover:from-blue-800 hover:to-blue-950 transition">Calcular</button>
           <button type="button" id="limpar-form" class="w-1/2 bg-gray-300 text-gray-800 p-3 rounded-md hover:bg-gray-400 transition">Limpar</button>
         </div>
       </form>
@@ -97,14 +102,14 @@
       <div id="mensagem" class="mt-4 hidden"></div>
 
       <div class="mt-8 p-6 bg-gray-50 rounded-xl">
-        <h2 class="text-3xl font-semibold text-blue-700 mb-6">Resultados do Dimensionamento</h2>
+        <h2 class="text-3xl font-semibold text-blue-900 mb-6">Resultados do Dimensionamento</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <p id="vazao-m3h" class="text-lg text-gray-700"><i class="fas fa-tint text-blue-500 mr-2"></i>Vazão Calculada: <span class="font-semibold">0.00</span> m³/h</p>
-          <p id="mca" class="text-lg text-gray-700"><i class="fas fa-ruler-vertical text-blue-500 mr-2"></i>Altura Manométrica Total (MCA): <span class="font-semibold">0.00</span> m</p>
-          <p id="bomba-recomendada" class="text-lg text-gray-700"><i class="fas fa-pump-soap text-blue-500 mr-2"></i>Modelo de Bomba Recomendado: <span class="font-semibold">Nenhum modelo encontrado</span></p>
+          <p id="vazao-m3h" class="text-lg text-gray-700"><i class="fas fa-tint text-blue-700 mr-2"></i>Vazão Calculada: <span class="font-semibold">0.00</span> m³/h</p>
+          <p id="mca" class="text-lg text-gray-700"><i class="fas fa-ruler-vertical text-blue-700 mr-2"></i>Altura Manométrica Total (MCA): <span class="font-semibold">0.00</span> m</p>
+          <p id="bomba-recomendada" class="text-lg text-gray-700"><i class="fas fa-pump-soap text-blue-700 mr-2"></i>Modelo de Bomba Recomendado: <span class="font-semibold">Nenhum modelo encontrado</span></p>
         </div>
         <div id="detalhamento-bombas" class="mt-6">
-          <h3 class="text-xl font-semibold text-blue-700 mb-4">Detalhamento das Bombas</h3>
+          <h3 class="text-xl font-semibold text-blue-900 mb-4">Detalhamento das Bombas</h3>
           <table class="w-full border-collapse">
             <thead>
               <tr class="bg-blue-100">
@@ -122,7 +127,7 @@
     </section>
 
     <footer class="text-center mt-12 text-gray-600">
-      <p>Desenvolvido por Daniel Silva de Souza para <a href="#" class="text-blue-500 underline">Enner Engenharia</a></p>
+      <p>Desenvolvido por Daniel Silva de Souza para <a href="https://www.linkedin.com/in/danielsouzaengeletricista" target="_blank" class="text-blue-700 underline">Enner Engenharia</a></p>
       <p class="mt-2">© 2025 Enner Engenharia. Todos os direitos reservados.</p>
     </footer>
   </div>
