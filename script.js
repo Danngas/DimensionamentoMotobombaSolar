@@ -13,7 +13,7 @@ async function carregarBombas() {
 
 // Configuração do gráfico
 let chartInstance = null;
-function criarGrafico(vazaoM3h, mca, bombas) {
+function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
   const ctx = document.getElementById('curvas-bombas').getContext('2d');
   if (chartInstance) {
     chartInstance.destroy();
@@ -31,7 +31,9 @@ function criarGrafico(vazaoM3h, mca, bombas) {
           ][index],
           backgroundColor: 'transparent',
           fill: false,
-          tension: 0.4
+          tension: 0.4,
+          borderWidth: bomba.modelo === bombaRecomendada?.modelo ? 4 : 2,
+          opacity: bomba.modelo === bombaRecomendada?.modelo ? 1 : 0.5
         })),
         {
           label: 'Ponto de Operação',
@@ -41,6 +43,24 @@ function criarGrafico(vazaoM3h, mca, bombas) {
           pointRadius: 6,
           pointHoverRadius: 8,
           showLine: false
+        },
+        {
+          label: 'Linha de Interseção (Vazão)',
+          data: [{ x: vazaoM3h, y: 0 }, { x: vazaoM3h, y: mca }],
+          borderColor: '#000000',
+          borderDash: [5, 5],
+          borderWidth: 2,
+          pointRadius: 0,
+          showLine: true
+        },
+        {
+          label: 'Linha de Interseção (MCA)',
+          data: [{ x: 0, y: mca }, { x: vazaoM3h, y: mca }],
+          borderColor: '#000000',
+          borderDash: [5, 5],
+          borderWidth: 2,
+          pointRadius: 0,
+          showLine: true
         }
       ]
     },
@@ -91,15 +111,61 @@ function interpolarAltura(dados, vazaoDesejada) {
 
 // Função para selecionar bomba adequada
 function selecionarBomba(vazaoM3h, mca, bombas) {
-  let bombaSelecionada = null;
+  const bombasCompativeis = [];
   for (const bomba of bombas) {
     const altura = interpolarAltura(bomba.dados, vazaoM3h);
     if (altura >= mca) {
-      bombaSelecionada = bomba;
-      break;
+      bombasCompativeis.push({
+        modelo: bomba.modelo,
+        potencia: bomba.potencia,
+        altura: altura
+      });
     }
   }
-  return bombaSelecionada ? `${bombaSelecionada.modelo}, ${bombaSelecionada.potencia}` : "Nenhum modelo encontrado";
+
+  // Ordenar por potência (menor para maior)
+  bombasCompativeis.sort((a, b) => {
+    const potenciaA = parseFloat(a.potencia);
+    const potenciaB = parseFloat(b.potencia);
+    return potenciaA - potenciaB;
+  });
+
+  return {
+    bombaRecomendada: bombasCompativeis[0] || null,
+    bombasCompativeis: bombasCompativeis,
+    bombasDescartadas: bombas.filter(bomba => !bombasCompativeis.some(c => c.modelo === bomba.modelo))
+  };
+}
+
+// Atualizar tabela de bombas
+function atualizarTabelaBombas(bombasCompativeis, bombasDescartadas, vazaoM3h, mca) {
+  const tabela = document.getElementById('tabela-bombas');
+  tabela.innerHTML = '';
+
+  bombasCompativeis.forEach(bomba => {
+    const row = document.createElement('tr');
+    row.className = bomba === bombasCompativeis[0] ? 'bg-green-100' : '';
+    row.innerHTML = `
+      <td class="border p-2">${bomba.modelo}</td>
+      <td class="border p-2">${bomba.potencia}</td>
+      <td class="border p-2">${bomba.altura.toFixed(2)}</td>
+      <td class="border p-2">${bomba === bombasCompativeis[0] ? 'Recomendada (Menor Potência)' : 'Compatível'}</td>
+    `;
+    tabela.appendChild(row);
+  });
+
+  bombasDescartadas.forEach(bomba => {
+    const altura = interpolarAltura(bomba.dados, vazaoM3h);
+    const row = document.createElement('tr');
+    row.className = 'bg-red-100';
+    row.innerHTML = `
+      <td class="border p-2">${bomba.modelo}</td>
+      <td class="border p-2">${bomba.potencia}</td>
+      <td class="border p-2">${altura.toFixed(2)}</td>
+      <td class="border p-2">Descartada (Altura Insuficiente)</td>
+    `;
+    tabela.appendChild(row);
+  });
 }
 
 // Inicializar o formulário
@@ -172,17 +238,12 @@ async function inicializar() {
     const mca = h1 + h2 + distanciaTotal * kPerdas;
 
     // Selecionar bomba
-    const bombaRecomendada = selecionarBomba(vazaoM3h, mca, bombas);
+    const { bombaRecomendada, bombasCompativeis, bombasDescartadas } = selecionarBomba(vazaoM3h, mca, bombas);
 
     // Exibir resultados
     document.getElementById('vazao-m3h').innerHTML = `Vazão Calculada: <span>${vazaoM3h.toFixed(2)}</span> m³/h`;
     document.getElementById('mca').innerHTML = `Altura Manométrica Total (MCA): <span>${mca.toFixed(2)}</span> m`;
-    document.getElementById('bomba-recomendada').innerHTML = `Modelo de Bomba Recomendado: <span>${bombaRecomendada}</span>`;
+    document.getElementById('bomba-recomendada').innerHTML = `Modelo de Bomba Recomendado: <span>${bombaRecomendada ? `${bombaRecomendada.modelo}, ${bombaRecomendada.potencia}` : 'Nenhum modelo encontrado'}</span>`;
 
-    // Criar gráfico
-    criarGrafico(vazaoM3h, mca, bombas);
-  });
-}
-
-// Iniciar a aplicação
-inicializar();
+    // Atualizar tabela de bombas
+    atualizarTabelaBombas(bombasCompative

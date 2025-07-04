@@ -59,7 +59,21 @@
           <p id="mca" class="text-lg">Altura Manométrica Total (MCA): <span>0.00</span> m</p>
           <p id="bomba-recomendada" class="text-lg">Modelo de Bomba Recomendado: <span>Nenhum modelo encontrado</span></p>
         </div>
-        <canvas id="curvas-bombas" class="w-full" style="max-height: 600px;"></canvas>
+        <div id="detalhamento-bombas" class="mt-6">
+          <h3 class="text-xl font-semibold mb-4">Detalhamento das Bombas</h3>
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="bg-gray-200">
+                <th class="border p-2 text-left">Modelo</th>
+                <th class="border p-2 text-left">Potência</th>
+                <th class="border p-2 text-left">Altura na Vazão Desejada (m)</th>
+                <th class="border p-2 text-left">Status</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-bombas"></tbody>
+          </table>
+        </div>
+        <canvas id="curvas-bombas" class="w-full mt-6" style="max-height: 600px;"></canvas>
       </div>
     </div>
   </div>
