@@ -1,10 +1,10 @@
-/* Personalizações de CSS para complementar o Tailwind */
+/* Estilos base mantidos como estavam */
 body {
   font-family: 'Inter', sans-serif;
 }
 
 input:focus {
-  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.3); /* Ajustado para azul escuro */
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.4); /* Ajuste para corresponder ao blue-700 */
 }
 
 button {
@@ -12,17 +12,39 @@ button {
 }
 
 #mensagem.success {
-  background-color: #e6fffa;
-  color: #065f46; /* Verde escuro para harmonizar */
+  background-color: #e6ffe6;
+  color: #1d4dd8;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #6ee7b7;
+  border: 1px solid #a3bffa;
 }
 
 #mensagem.error {
-  background-color: #fff5f5;
-  color: #991b1b;
+  background-color: #ffebee;
+  color: #dc3545;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #feb2b2;
+  border: 1px solid #dc3545;
+}
+
+footer {
+  color: #ffffff;
+}
+
+footer a {
+  color: #a3bffa; /* Ajuste para links no rodapé com contraste */
+}
+
+footer a:hover {
+  color: #7fa3ff;
+}
+
+/* Estilos para as abas de navegação */
+nav ul li a {
+  display: block;
+  font-weight: 600;
+}
+
+nav ul li a:hover {
+  text-decoration: none;
 }
