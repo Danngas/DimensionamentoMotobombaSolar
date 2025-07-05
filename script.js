@@ -31,23 +31,27 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
     return;
   }
 
+  // Depuração: Verificar dados das bombas
+  console.log('Dados das bombas:', bombas);
+
   const chartConfig = {
     type: 'line',
     data: {
       datasets: [
         ...bombas.map((bomba, index) => ({
           label: `${bomba.modelo} (${bomba.potencia})`,
-          data: bomba.dados.map(d => ({ x: d.vazao, y: d.altura })).filter(point => point.x !== undefined && point.y !== undefined),
+          data: bomba.dados.map(d => ({ x: d.vazao || 0, y: d.altura || 0 })),
           borderColor: ['#1d4dd8', '#3b82f6', '#93c5fd', '#dbeafe', '#a3bffa'][index % 5],
           backgroundColor: 'transparent',
           fill: false,
           tension: 0.4,
           borderWidth: bomba.modelo === bombaRecomendada?.modelo ? 4 : 2,
-          opacity: bomba.modelo === bombaRecomendada?.modelo ? 1 : 0.5
+          pointRadius: 2,
+          pointHoverRadius: 5
         })),
         {
           label: 'Ponto de Operação',
-          data: [{ x: vazaoM3h, y: mca }],
+          data: [{ x: vazaoM3h || 0, y: mca || 0 }],
           backgroundColor: '#a3bffa',
           borderColor: '#a3bffa',
           pointRadius: 8,
@@ -56,7 +60,7 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
         },
         {
           label: 'Linha de Interseção (Vazão)',
-          data: [{ x: vazaoM3h, y: 0 }, { x: vazaoM3h, y: mca }],
+          data: [{ x: vazaoM3h || 0, y: 0 }, { x: vazaoM3h || 0, y: mca || 0 }],
           borderColor: '#6c757d',
           borderDash: [5, 5],
           borderWidth: 2,
@@ -65,7 +69,7 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
         },
         {
           label: 'Linha de Interseção (MCA)',
-          data: [{ x: 0, y: mca }, { x: vazaoM3h, y: mca }],
+          data: [{ x: 0, y: mca || 0 }, { x: vazaoM3h || 0, y: mca || 0 }],
           borderColor: '#6c757d',
           borderDash: [5, 5],
           borderWidth: 2,
@@ -81,13 +85,13 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
         x: {
           title: { display: true, text: 'Vazão (m³/h)', color: '#1d4dd8', font: { size: 14 } },
           min: 0,
-          max: Math.max(...bombas.flatMap(b => b.dados.map(d => d.vazao)), vazaoM3h) + 2,
+          max: Math.max(...bombas.flatMap(b => b.dados.map(d => d.vazao || 0)), vazaoM3h || 0) + 2 || 12,
           ticks: { stepSize: 1, color: '#1d4dd8' }
         },
         y: {
           title: { display: true, text: 'Altura (m)', color: '#1d4dd8', font: { size: 14 } },
           min: 0,
-          max: Math.max(...bombas.flatMap(b => b.dados.map(d => d.altura)), mca) + 50,
+          max: Math.max(...bombas.flatMap(b => b.dados.map(d => d.altura || 0)), mca || 0) + 50 || 250,
           ticks: { stepSize: 50, color: '#1d4dd8' }
         }
       },
