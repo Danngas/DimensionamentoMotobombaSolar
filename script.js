@@ -33,9 +33,7 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
         ...bombas.map((bomba, index) => ({
           label: `${bomba.modelo} (${bomba.potencia})`,
           data: bomba.dados.map(d => ({ x: d.vazao, y: d.altura })),
-          borderColor: [
-            '#1E3A8A', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'
-          ][index],
+          borderColor: ['#1d4dd8', '#3b82f6', '#93c5fd', '#dbeafe', '#a3bffa'][index % 5],
           backgroundColor: 'transparent',
           fill: false,
           tension: 0.4,
@@ -45,8 +43,8 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
         {
           label: 'Ponto de Operação',
           data: [{ x: vazaoM3h, y: mca }],
-          backgroundColor: '#EF4444',
-          borderColor: '#EF4444',
+          backgroundColor: '#a3bffa',
+          borderColor: '#a3bffa',
           pointRadius: 8,
           pointHoverRadius: 10,
           showLine: false
@@ -54,7 +52,7 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
         {
           label: 'Linha de Interseção (Vazão)',
           data: [{ x: vazaoM3h, y: 0 }, { x: vazaoM3h, y: mca }],
-          borderColor: '#1F2937',
+          borderColor: '#6c757d',
           borderDash: [5, 5],
           borderWidth: 2,
           pointRadius: 0,
@@ -63,7 +61,7 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
         {
           label: 'Linha de Interseção (MCA)',
           data: [{ x: 0, y: mca }, { x: vazaoM3h, y: mca }],
-          borderColor: '#1F2937',
+          borderColor: '#6c757d',
           borderDash: [5, 5],
           borderWidth: 2,
           pointRadius: 0,
@@ -74,24 +72,10 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
     options: {
       responsive: true,
       scales: {
-        x: {
-          type: 'linear',
-          title: { display: true, text: 'Vazão (m³/h)', font: { size: 14 } },
-          min: 0,
-          max: 12,
-          ticks: { stepSize: 1 }
-        },
-        y: {
-          title: { display: true, text: 'Altura (m)', font: { size: 14 } },
-          min: 0,
-          max: 250,
-          ticks: { stepSize: 50 }
-        }
+        x: { title: { display: true, text: 'Vazão (m³/h)', color: '#1d4dd8', font: { size: 14 } }, min: 0, max: 12, ticks: { stepSize: 1, color: '#1d4dd8' } },
+        y: { title: { display: true, text: 'Altura (m)', color: '#1d4dd8', font: { size: 14 } }, min: 0, max: 250, ticks: { stepSize: 50, color: '#1d4dd8' } }
       },
-      plugins: {
-        legend: { display: true, position: 'top', labels: { font: { size: 12 } } },
-        tooltip: { enabled: true }
-      }
+      plugins: { legend: { display: true, position: 'top', labels: { font: { size: 12 }, color: '#1d4dd8' } }, tooltip: { enabled: true } }
     }
   };
 
@@ -120,19 +104,11 @@ function selecionarBomba(vazaoM3h, mca, bombas) {
   for (const bomba of bombas) {
     const altura = interpolarAltura(bomba.dados, vazaoM3h);
     if (altura >= mca) {
-      bombasCompativeis.push({
-        modelo: bomba.modelo,
-        potencia: bomba.potencia,
-        altura: altura
-      });
+      bombasCompativeis.push({ modelo: bomba.modelo, potencia: bomba.potencia, altura: altura });
     }
   }
 
-  bombasCompativeis.sort((a, b) => {
-    const potenciaA = parseFloat(a.potencia);
-    const potenciaB = parseFloat(b.potencia);
-    return potenciaA - potenciaB;
-  });
+  bombasCompativeis.sort((a, b) => parseFloat(a.potencia) - parseFloat(b.potencia));
 
   return {
     bombaRecomendada: bombasCompativeis[0] || null,
@@ -152,7 +128,7 @@ function atualizarTabelaBombas(bombasCompativeis, bombasDescartadas, vazaoM3h, m
       <td class="border p-3">${bomba.modelo}</td>
       <td class="border p-3">${bomba.potencia}</td>
       <td class="border p-3">${bomba.altura.toFixed(2)}</td>
-      <td class="border p-3"><i class="fas fa-check text-green-600 mr-2"></i>${bomba === bombasCompativeis[0] ? 'Recomendada (Menor Potência)' : 'Compatível'}</td>
+      <td class="border p-3"><i class="fas fa-check text-green-700 mr-2"></i>${bomba === bombasCompativeis[0] ? 'Recomendada' : 'Compatível'}</td>
     `;
     tabela.appendChild(row);
   });
@@ -165,7 +141,7 @@ function atualizarTabelaBombas(bombasCompativeis, bombasDescartadas, vazaoM3h, m
       <td class="border p-3">${bomba.modelo}</td>
       <td class="border p-3">${bomba.potencia}</td>
       <td class="border p-3">${altura.toFixed(2)}</td>
-      <td class="border p-3"><i class="fas fa-times text-red-600 mr-2"></i>Descartada (Altura Insuficiente)</td>
+      <td class="border p-3"><i class="fas fa-times text-red-600 mr-2"></i>Descartada</td>
     `;
     tabela.appendChild(row);
   });
@@ -182,27 +158,15 @@ async function inicializar() {
   const limparBtn = document.getElementById('limpar-form');
 
   function atualizarPlaceholder() {
-    const unidade = unidadeVazaoSelect.value;
-    if (unidade === 'm3_hora') {
-      vazaoInput.placeholder = 'Metros Cúbicos por Hora';
-    } else if (unidade === 'l_dia') {
-      vazaoInput.placeholder = 'Litros por Dia';
-    } else if (unidade === 'l_hora') {
-      vazaoInput.placeholder = 'Litros por Hora';
-    }
+    vazaoInput.placeholder = unidadeVazaoSelect.value === 'm3_hora' ? 'Metros Cúbicos por Hora' : (unidadeVazaoSelect.value === 'l_dia' ? 'Litros por Dia' : 'Litros por Hora');
   }
 
   atualizarPlaceholder();
 
   unidadeVazaoSelect.addEventListener('change', function() {
     atualizarPlaceholder();
-    if (this.value === 'l_dia') {
-      hspContainer.classList.remove('hidden');
-      document.getElementById('hsp').setAttribute('required', 'true');
-    } else {
-      hspContainer.classList.add('hidden');
-      document.getElementById('hsp').removeAttribute('required');
-    }
+    hspContainer.classList.toggle('hidden', this.value !== 'l_dia');
+    document.getElementById('hsp').toggleAttribute('required', this.value === 'l_dia');
   });
 
   limparBtn.addEventListener('click', function() {
@@ -232,34 +196,25 @@ async function inicializar() {
     const hsp = parseFloat(document.getElementById('hsp').value) || 0;
     const kPerdas = parseFloat(document.getElementById('k_perdas').value);
 
-    if (isNaN(h1) || isNaN(h2) || isNaN(distancia) || isNaN(vazao) || isNaN(kPerdas)) {
-      mostrarMensagem('Por favor, preencha todos os campos com valores numéricos válidos.', 'error');
+    if ([h1, h2, distancia, vazao, kPerdas].some(isNaN)) {
+      mostrarMensagem('Preencha todos os campos com valores válidos.', 'error');
       return;
     }
     if (unidadeVazao === 'l_dia' && hsp <= 0) {
-      mostrarMensagem('Por favor, insira um valor válido para Horas de Sol Pleno (h).', 'error');
+      mostrarMensagem('Insira um valor válido para Horas de Sol Pleno.', 'error');
       return;
     }
-    if (h1 < 0 || h2 < 0 || distancia < 0 || vazao < 0 || kPerdas < 0) {
-      mostrarMensagem('Os valores não podem ser negativos.', 'error');
+    if ([h1, h2, distancia, vazao, kPerdas].some(v => v < 0)) {
+      mostrarMensagem('Valores não podem ser negativos.', 'error');
       return;
     }
     if (kPerdas > 1) {
-      mostrarMensagem('O coeficiente de perdas deve estar entre 0 e 1.', 'error');
+      mostrarMensagem('Coeficiente de perdas deve estar entre 0 e 1.', 'error');
       return;
     }
 
-    let vazaoM3h;
-    if (unidadeVazao === 'l_dia') {
-      vazaoM3h = (vazao / hsp) / 1000;
-    } else if (unidadeVazao === 'l_hora') {
-      vazaoM3h = vazao / 1000;
-    } else {
-      vazaoM3h = vazao;
-    }
-
-    const distanciaTotal = h1 + h2 + distancia;
-    const mca = h1 + h2 + distanciaTotal * kPerdas;
+    let vazaoM3h = unidadeVazao === 'l_dia' ? (vazao / hsp) / 1000 : (unidadeVazao === 'l_hora' ? vazao / 1000 : vazao);
+    const mca = h1 + h2 + (h1 + h2 + distancia) * kPerdas;
 
     const { bombaRecomendada, bombasCompativeis, bombasDescartadas } = selecionarBomba(vazaoM3h, mca, bombas);
 
