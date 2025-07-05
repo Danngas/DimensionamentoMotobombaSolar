@@ -12,22 +12,29 @@
 </head>
 <body class="bg-gray-50 font-inter">
   <div class="container mx-auto p-6 max-w-7xl">
-    <header class="text-center mb-12 flex items-center justify-center md:justify-start">
-      <a href="https://www.linkedin.com/in/danielsouzaengeletricista" target="_blank" class="mr-6">
-        <img src="logo.png" alt="Enner Engenharia Logo" class="h-16 w-auto">
-      </a>
-      <div>
-        <h1 class="text-5xl font-bold text-blue-900 mb-2">Dimensionamento de Motobomba Solar</h1>
-        <p class="text-lg text-gray-600">Calcule a bomba ideal para seu sistema de bombeamento solar de forma simples e precisa.</p>
+    <header class="mb-12">
+      <div class="flex items-center justify-between mb-6">
+        <a href="https://www.linkedin.com/in/danielsouzaengeletricista" target="_blank" class="mr-6">
+          <img src="logo.png" alt="Enner Engenharia Logo" class="h-16 w-auto">
+        </a>
+        <h1 class="text-5xl font-bold text-blue-900">Dimensionamento de Motobomba Solar</h1>
       </div>
+      <nav class="bg-blue-900 text-white p-2 rounded-lg shadow-lg">
+        <ul class="flex space-x-6 justify-center">
+          <li><a href="#inicio" class="px-4 py-2 rounded-md hover:bg-blue-800 transition">Início</a></li>
+          <li><a href="#como-usar" class="px-4 py-2 rounded-md hover:bg-blue-800 transition">Como Usar</a></li>
+          <li><a href="#dados-projeto" class="px-4 py-2 rounded-md hover:bg-blue-800 transition">Dados de Projeto</a></li>
+          <li><a href="#resultados" class="px-4 py-2 rounded-md hover:bg-blue-800 transition">Resultados</a></li>
+        </ul>
+      </nav>
     </header>
 
-    <section class="bg-white p-6 rounded-xl shadow-lg mb-12 text-center">
-      <img src="ilustracao.png" alt="Ilustração do Dimensionamento" class="mx-auto mb-4 max-w-full h-auto" style="max-height: 300px;">
+    <section id="inicio" class="bg-white p-6 rounded-xl shadow-lg mb-12 text-center">
+      <img src="ilustracao.png" alt="Ilustração do Dimensionamento" class="mx-auto mb-4 max-w-full h-auto" style="max-height: 1000px;">
       <p class="text-gray-700 text-sm">Esta ilustração mostra os dados necessários: altura do poço (H1), altura do reservatório (H2), distância da tubulação e vazão desejada. Use-a como guia para preencher o formulário.</p>
     </section>
 
-    <section class="bg-white p-8 rounded-xl shadow-lg mb-12">
+    <section id="como-usar" class="bg-white p-8 rounded-xl shadow-lg mb-12">
       <h2 class="text-3xl font-semibold text-blue-900 mb-6">Como Usar</h2>
       <ol class="list-decimal list-inside text-gray-700 space-y-2">
         <li>Preencha os dados do projeto no formulário abaixo (ex.: alturas, distância, vazão).</li>
@@ -38,7 +45,7 @@
       </ol>
     </section>
 
-    <section class="bg-white p-8 rounded-xl shadow-lg">
+    <section id="dados-projeto" class="bg-white p-8 rounded-xl shadow-lg">
       <h2 class="text-3xl font-semibold text-blue-900 mb-6">Dados de Projeto</h2>
       <form id="dimensionamento-form">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -106,7 +113,7 @@
 
       <div id="mensagem" class="mt-4 hidden"></div>
 
-      <div class="mt-8 p-6 bg-gray-50 rounded-xl">
+      <div id="resultados" class="mt-8 p-6 bg-gray-50 rounded-xl">
         <h2 class="text-3xl font-semibold text-blue-900 mb-6">Resultados do Dimensionamento</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <p id="vazao-m3h" class="text-lg text-gray-700"><i class="fas fa-tint text-blue-700 mr-2"></i>Vazão Calculada: <span class="font-semibold">0.00</span> m³/h</p>
@@ -131,17 +138,18 @@
       </div>
     </section>
 
-    <footer class="mt-12 py-6 bg-gray-800 text-white text-center">
+    <footer class="mt-12 py-6 bg-gray-600 text-white text-center">
       <div class="container mx-auto px-4">
         <p class="mb-4">Desenvolvido por:</p>
         <p class="mb-2">
           <strong>Daniel Silva de Souza</strong><br>
           Engenheiro Eletricista | Enner Engenharia<br>
-          <a href="mailto:eng.daniel.enner@gmail.com" class="underline">eng.daniel.enner@gmail.com</a> | (XX) XXXX-XXXX<br>
+          <a href="mailto:eng.daniel.enner@gmail.com" class="underline">eng.daniel.enner@gmail.com</a><br>
           <a href="https://www.linkedin.com/in/danielsouzaengeletricista" target="_blank" class="underline">LinkedIn</a>
         </p>
         <p class="mb-4">
           <strong>Hiago Macedo Alves</strong><br>
+          Engenheiro Eletricista | Especialista em Projetos Fotovoltaicos<br>
           Contribuição ao Projeto<br>
           <a href="https://www.linkedin.com/in/hiagomacedoalves" target="_blank" class="underline">LinkedIn</a>
         </p>
