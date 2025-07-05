@@ -26,41 +26,32 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
     chartInstance.destroy();
   }
 
-  if (!bombas || bombas.length === 0) {
-    mostrarMensagem('Nenhum dado de bomba disponível para o gráfico.', 'error');
-    return;
-  }
-
-  // Depuração: Verificar dados das bombas
-  console.log('Dados das bombas:', bombas);
-
   const chartConfig = {
     type: 'line',
     data: {
       datasets: [
         ...bombas.map((bomba, index) => ({
           label: `${bomba.modelo} (${bomba.potencia})`,
-          data: bomba.dados.map(d => ({ x: d.vazao || 0, y: d.altura || 0 })),
-          borderColor: ['#1d4dd8', '#3b82f6', '#93c5fd', '#dbeafe', '#a3bffa'][index % 5],
+          data: bomba.dados.map(d => ({ x: d.vazao, y: d.altura })),
+          borderColor: ['#e7e79d', '#c0d890', '#78a890', '#606078', '#d8a878'][index % 5],
           backgroundColor: 'transparent',
           fill: false,
           tension: 0.4,
           borderWidth: bomba.modelo === bombaRecomendada?.modelo ? 4 : 2,
-          pointRadius: 2,
-          pointHoverRadius: 5
+          opacity: bomba.modelo === bombaRecomendada?.modelo ? 1 : 0.5
         })),
         {
           label: 'Ponto de Operação',
-          data: [{ x: vazaoM3h || 0, y: mca || 0 }],
-          backgroundColor: '#a3bffa',
-          borderColor: '#a3bffa',
+          data: [{ x: vazaoM3h, y: mca }],
+          backgroundColor: '#d8a878',
+          borderColor: '#d8a878',
           pointRadius: 8,
           pointHoverRadius: 10,
           showLine: false
         },
         {
           label: 'Linha de Interseção (Vazão)',
-          data: [{ x: vazaoM3h || 0, y: 0 }, { x: vazaoM3h || 0, y: mca || 0 }],
+          data: [{ x: vazaoM3h, y: 0 }, { x: vazaoM3h, y: mca }],
           borderColor: '#6c757d',
           borderDash: [5, 5],
           borderWidth: 2,
@@ -69,7 +60,7 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
         },
         {
           label: 'Linha de Interseção (MCA)',
-          data: [{ x: 0, y: mca || 0 }, { x: vazaoM3h || 0, y: mca || 0 }],
+          data: [{ x: 0, y: mca }, { x: vazaoM3h, y: mca }],
           borderColor: '#6c757d',
           borderDash: [5, 5],
           borderWidth: 2,
@@ -80,34 +71,15 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false,
       scales: {
-        x: {
-          title: { display: true, text: 'Vazão (m³/h)', color: '#1d4dd8', font: { size: 14 } },
-          min: 0,
-          max: Math.max(...bombas.flatMap(b => b.dados.map(d => d.vazao || 0)), vazaoM3h || 0) + 2 || 12,
-          ticks: { stepSize: 1, color: '#1d4dd8' }
-        },
-        y: {
-          title: { display: true, text: 'Altura (m)', color: '#1d4dd8', font: { size: 14 } },
-          min: 0,
-          max: Math.max(...bombas.flatMap(b => b.dados.map(d => d.altura || 0)), mca || 0) + 50 || 250,
-          ticks: { stepSize: 50, color: '#1d4dd8' }
-        }
+        x: { title: { display: true, text: 'Vazão (m³/h)', color: '#78a890', font: { size: 14 } }, min: 0, max: 12, ticks: { stepSize: 1, color: '#606078' } },
+        y: { title: { display: true, text: 'Altura (m)', color: '#78a890', font: { size: 14 } }, min: 0, max: 250, ticks: { stepSize: 50, color: '#606078' } }
       },
-      plugins: {
-        legend: { display: true, position: 'top', labels: { font: { size: 12 }, color: '#1d4dd8' } },
-        tooltip: { enabled: true }
-      }
+      plugins: { legend: { display: true, position: 'top', labels: { font: { size: 12 }, color: '#78a890' } }, tooltip: { enabled: true } }
     }
   };
 
-  try {
-    chartInstance = new Chart(ctx, chartConfig);
-  } catch (error) {
-    console.error('Erro ao criar o gráfico:', error);
-    mostrarMensagem('Erro ao renderizar o gráfico. Verifique os dados.', 'error');
-  }
+  chartInstance = new Chart(ctx, chartConfig);
 }
 
 function interpolarAltura(dados, vazaoDesejada) {
@@ -202,9 +174,9 @@ async function inicializar() {
     atualizarPlaceholder();
     hspContainer.classList.add('hidden');
     document.getElementById('hsp').removeAttribute('required');
-    document.getElementById('vazao-m3h').innerHTML = `<i class="fas fa-tint text-blue-700 mr-2"></i>Vazão Calculada: <span class="font-semibold">0.00</span> m³/h`;
-    document.getElementById('mca').innerHTML = `<i class="fas fa-ruler-vertical text-blue-700 mr-2"></i>Altura Manométrica Total (MCA): <span class="font-semibold">0.00</span> m`;
-    document.getElementById('bomba-recomendada').innerHTML = `<i class="fas fa-pump-soap text-blue-700 mr-2"></i>Modelo de Bomba Recomendado: <span class="font-semibold">Nenhum modelo encontrado</span>`;
+    document.getElementById('vazao-m3h').innerHTML = `<i class="fas fa-tint text-custom3 mr-2"></i>Vazão Calculada: <span class="font-semibold">0.00</span> m³/h`;
+    document.getElementById('mca').innerHTML = `<i class="fas fa-ruler-vertical text-custom3 mr-2"></i>Altura Manométrica Total (MCA): <span class="font-semibold">0.00</span> m`;
+    document.getElementById('bomba-recomendada').innerHTML = `<i class="fas fa-pump-soap text-custom3 mr-2"></i>Modelo de Bomba Recomendado: <span class="font-semibold">Nenhum modelo encontrado</span>`;
     document.getElementById('tabela-bombas').innerHTML = '';
     if (chartInstance) {
       chartInstance.destroy();
@@ -246,9 +218,9 @@ async function inicializar() {
 
     const { bombaRecomendada, bombasCompativeis, bombasDescartadas } = selecionarBomba(vazaoM3h, mca, bombas);
 
-    document.getElementById('vazao-m3h').innerHTML = `<i class="fas fa-tint text-blue-700 mr-2"></i>Vazão Calculada: <span class="font-semibold">${vazaoM3h.toFixed(2)}</span> m³/h`;
-    document.getElementById('mca').innerHTML = `<i class="fas fa-ruler-vertical text-blue-700 mr-2"></i>Altura Manométrica Total (MCA): <span class="font-semibold">${mca.toFixed(2)}</span> m`;
-    document.getElementById('bomba-recomendada').innerHTML = `<i class="fas fa-pump-soap text-blue-700 mr-2"></i>Modelo de Bomba Recomendado: <span class="font-semibold">${bombaRecomendada ? `${bombaRecomendada.modelo}, ${bombaRecomendada.potencia}` : 'Nenhum modelo encontrado'}</span>`;
+    document.getElementById('vazao-m3h').innerHTML = `<i class="fas fa-tint text-custom3 mr-2"></i>Vazão Calculada: <span class="font-semibold">${vazaoM3h.toFixed(2)}</span> m³/h`;
+    document.getElementById('mca').innerHTML = `<i class="fas fa-ruler-vertical text-custom3 mr-2"></i>Altura Manométrica Total (MCA): <span class="font-semibold">${mca.toFixed(2)}</span> m`;
+    document.getElementById('bomba-recomendada').innerHTML = `<i class="fas fa-pump-soap text-custom3 mr-2"></i>Modelo de Bomba Recomendado: <span class="font-semibold">${bombaRecomendada ? `${bombaRecomendada.modelo}, ${bombaRecomendada.potencia}` : 'Nenhum modelo encontrado'}</span>`;
 
     atualizarTabelaBombas(bombasCompativeis, bombasDescartadas, vazaoM3h, mca);
     criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada);
