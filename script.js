@@ -26,13 +26,18 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
     chartInstance.destroy();
   }
 
+  if (!bombas || bombas.length === 0) {
+    mostrarMensagem('Nenhum dado de bomba disponível para o gráfico.', 'error');
+    return;
+  }
+
   const chartConfig = {
     type: 'line',
     data: {
       datasets: [
         ...bombas.map((bomba, index) => ({
           label: `${bomba.modelo} (${bomba.potencia})`,
-          data: bomba.dados.map(d => ({ x: d.vazao, y: d.altura })),
+          data: bomba.dados.map(d => ({ x: d.vazao, y: d.altura })).filter(point => point.x !== undefined && point.y !== undefined),
           borderColor: ['#1d4dd8', '#3b82f6', '#93c5fd', '#dbeafe', '#a3bffa'][index % 5],
           backgroundColor: 'transparent',
           fill: false,
@@ -71,15 +76,34 @@ function criarGrafico(vazaoM3h, mca, bombas, bombaRecomendada) {
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       scales: {
-        x: { title: { display: true, text: 'Vazão (m³/h)', color: '#1d4dd8', font: { size: 14 } }, min: 0, max: 12, ticks: { stepSize: 1, color: '#1d4dd8' } },
-        y: { title: { display: true, text: 'Altura (m)', color: '#1d4dd8', font: { size: 14 } }, min: 0, max: 250, ticks: { stepSize: 50, color: '#1d4dd8' } }
+        x: {
+          title: { display: true, text: 'Vazão (m³/h)', color: '#1d4dd8', font: { size: 14 } },
+          min: 0,
+          max: Math.max(...bombas.flatMap(b => b.dados.map(d => d.vazao)), vazaoM3h) + 2,
+          ticks: { stepSize: 1, color: '#1d4dd8' }
+        },
+        y: {
+          title: { display: true, text: 'Altura (m)', color: '#1d4dd8', font: { size: 14 } },
+          min: 0,
+          max: Math.max(...bombas.flatMap(b => b.dados.map(d => d.altura)), mca) + 50,
+          ticks: { stepSize: 50, color: '#1d4dd8' }
+        }
       },
-      plugins: { legend: { display: true, position: 'top', labels: { font: { size: 12 }, color: '#1d4dd8' } }, tooltip: { enabled: true } }
+      plugins: {
+        legend: { display: true, position: 'top', labels: { font: { size: 12 }, color: '#1d4dd8' } },
+        tooltip: { enabled: true }
+      }
     }
   };
 
-  chartInstance = new Chart(ctx, chartConfig);
+  try {
+    chartInstance = new Chart(ctx, chartConfig);
+  } catch (error) {
+    console.error('Erro ao criar o gráfico:', error);
+    mostrarMensagem('Erro ao renderizar o gráfico. Verifique os dados.', 'error');
+  }
 }
 
 function interpolarAltura(dados, vazaoDesejada) {
